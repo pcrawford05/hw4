@@ -615,9 +615,7 @@ template<typename Key, typename Value>
 void BinarySearchTree<Key, Value>::clear()
 {
     // TODO
-    //while(!empty())
-        //remove(root_->getKey());
-    clearHelper(root_); //This creates a SEG fault in BSTInsert.Random50x30ele but ^ this works
+    clearHelper(root_);
     root_= NULL;
 }
 
