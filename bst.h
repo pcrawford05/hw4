@@ -250,6 +250,7 @@ protected:
     int getHeight(Node<Key, Value>* root) const;
     static Node<Key, Value>* successor(Node<Key, Value>* current);
     bool balancedRec(Node<Key, Value>* root) const;
+    void clearHelper(Node<Key, Value>* root);
 
 protected:
     Node<Key, Value>* root_;
@@ -583,7 +584,7 @@ BinarySearchTree<Key, Value>::predecessor(Node<Key, Value>* current)
     //If no left child need to check if this is a right or left child
     if(current->getParent()->getLeft() == current) // If left child, then return NULL
         return NULL;
-    else
+    else 
         return current->getParent(); // If right child, return parent
 }
 
@@ -614,11 +615,22 @@ template<typename Key, typename Value>
 void BinarySearchTree<Key, Value>::clear()
 {
     // TODO
-    while(!empty()){
-        remove(root_->getKey()); 
-    }
+    //while(!empty())
+        //remove(root_->getKey());
+    clearHelper(root_); //This creates a SEG fault in BSTInsert.Random50x30ele but ^ this works
+    root_= NULL;
 }
 
+template<typename Key, typename Value>
+void BinarySearchTree<Key, Value>::clearHelper(Node<Key, Value>* root) 
+{
+    if(root == NULL)
+        return;
+    // Postorder walk
+    clearHelper(root->getLeft());
+    clearHelper(root->getRight());
+    delete root;
+}
 
 /**
 * A helper function to find the smallest node in the tree.
